@@ -1,0 +1,3 @@
+# 这个仓库的产物是给程序读的（YAML 订阅 + JSON 报告），工作区一律用 LF，
+# 免得 Windows 上的 CRLF 自动转换把 diff 和文件内容弄脏。
+* text=auto eol=lf
