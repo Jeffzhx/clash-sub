@@ -63,6 +63,26 @@ API_TREE = f"https://gitlab.com/api/v4/projects/{PROJECT_ENC}/repository/tree"
 # clash.meta2 放最前：它是 YAML、字段最干净，且目录名天然带 "meta2"，识读性最好。
 WANT_DIRS = ["clash.meta2", "quick", "hysteria", "hysteria2"]
 
+# ---------------------------------------------------------------------------
+# ★ 这几组目录名在仓库里存在**三套同名副本**，内容并不相同，必须显式指明用哪一套
+# ---------------------------------------------------------------------------
+#   root : clash.meta2/ 、quick/ …                  仓库根目录。配置文件数是 3/2/2/2（共 9 个）
+#   ip   : backup/img/1/2/ip/…                      配置文件数 6/4/4/4（共 18 个）
+#   ipp  : backup/img/1/2/ipp/…                     配置文件数 6/4/4/4（共 18 个）
+#
+# ⚠ 实测：ip/ 与 ipp/ 的同名文件 **sha 不同**（抽 5 个文件比对，4 个不同、只有 quick/4 恰好一致），
+#   所以它们**不是互为备份**，是三套各自独立的节点数据。
+# ⚠ 三套给出的节点集合差异很大：root 那套 6 个节点里 5 个是纯 IPv6（可用性明显更差），
+#   ipp 那套 7~8 个节点里只有 2 个 IPv6，还包含 IPv4 与域名节点。
+# 默认用 ipp —— 与本地 fetch_nodes.py 的来源保持一致。
+SOURCE_PREFIX = {
+    "root": "",
+    "ip": "backup/img/1/2/ip/",
+    "ipp": "backup/img/1/2/ipp/",
+}
+DEFAULT_SOURCE = "ipp"
+SOURCE = DEFAULT_SOURCE          # main() 里按 --source 覆盖
+
 # 目录缩写 -> 节点名前缀
 DIR_ABBR = {
     "clash.meta2": "cm2",
@@ -71,23 +91,52 @@ DIR_ABBR = {
     "hysteria2": "hy2",
 }
 
-# API 拉不到时的兜底清单（照 2026-09 的仓库实际结构写死）。
-# 注意 clash.meta2/2/3/ 下只有 .gitkeep，没有配置，所以不列。
-FALLBACK_FILES = [
-    "clash.meta2/config.yaml",
-    "clash.meta2/2/config.yaml",
-    "clash.meta2/3/config.yaml",
-    "quick/config.yaml",
-    "quick/3/config.yaml",
-    "hysteria/config.json",
-    "hysteria/2/config.json",
-    "hysteria2/config.json",
-    "hysteria2/2/config.json",
-]
+# 各目录在 ip/ipp 里的「文件名 + 编号上限」，兜底清单用它生成
+_DIR_SPEC = {
+    "clash.meta2": ("config.yaml", 6),
+    "quick": ("config.yaml", 4),
+    "hysteria": ("config.json", 4),
+    "hysteria2": ("config.json", 4),
+}
 
-# 本订阅只收这两种（都能被 mihomo 原生直连）。
-# xray / singbox / mieru / shadowquic 等不收 —— shadowquic 与本内核握手层不兼容（另见本地配置）。
-SUPPORTED_TYPES = {"hysteria", "hysteria2"}
+
+def _numbered_fallback(prefix: str) -> list[str]:
+    out = []
+    for d in WANT_DIRS:
+        fn, n = _DIR_SPEC[d]
+        out += [f"{prefix}{d}/{i}/{fn}" for i in range(1, n + 1)]
+    return out
+
+
+# API 拉不到时的兜底清单（照 2026-09 的仓库实际结构写死）。
+# 注意 clash.meta2/2/3/ 下只有 .gitkeep，没有配置，所以 root 那套不列。
+FALLBACK_FILES = {
+    "root": [
+        "clash.meta2/config.yaml", "clash.meta2/2/config.yaml", "clash.meta2/3/config.yaml",
+        "quick/config.yaml", "quick/3/config.yaml",
+        "hysteria/config.json", "hysteria/2/config.json",
+        "hysteria2/config.json", "hysteria2/2/config.json",
+    ],
+    "ip": _numbered_fallback("backup/img/1/2/ip/"),
+    "ipp": _numbered_fallback("backup/img/1/2/ipp/"),
+}
+
+# 本订阅收这些（都能被 mihomo 原生直连）。
+SUPPORTED_TYPES = {"hysteria", "hysteria2", "anytls"}
+
+# 明确**知道但故意不收**的协议，命中时在日志/报告里给出理由（而不是笼统说"不支持"）
+KNOWN_UNSUPPORTED = {
+    "mieru": "实测该源节点持续连不上（本地 fetch_nodes.py 的 --mieru 默认即为排除）",
+    "shadowquic": "本内核与其服务端握手层不兼容（JLS 实现代次不匹配），需改走原生 exe 旁路",
+    "juicity": "本轮不收（mihomo 虽支持，但该目录不在用户的 4 个目录内）",
+    "naiveproxy": "同上，不在用户的 4 个目录内",
+    "xray": "同上，不在用户的 4 个目录内",
+    "vless": "同 xray 目录",
+    "vmess": "同 xray 目录",
+    "trojan": "同上，不在用户的 4 个目录内",
+    "ss": "同上",
+    "ssr": "同上",
+}
 
 # 每种协议**允许出现**的字段白名单（字段名以 mihomo 为准）。
 #
@@ -110,6 +159,14 @@ ALLOWED_FIELDS = {
         "alpn", "ca", "ca-str", "obfs", "obfs-password", "hop-interval",
         "initial-stream-receive-window", "max-stream-receive-window",
         "initial-connection-receive-window", "max-connection-receive-window",
+    },
+    # anytls：上游在 quick/1 里出现过。mihomo 原生支持，本地已验证的 fetch_nodes.py
+    # 也把它放在 SUPPORTED_TYPES 里，所以这里一并收下。
+    "anytls": {
+        "type", "server", "port", "password", "sni",
+        "skip-cert-verify", "fingerprint", "client-fingerprint",
+        "alpn", "ca", "ca-str", "udp",
+        "idle-session-check-interval", "idle-session-timeout", "min-idle-session",
     },
 }
 
@@ -163,13 +220,25 @@ def fetch_text(path: str, timeout: int = 30) -> str:
     return raw.decode("utf-8", errors="replace")
 
 
-def list_upstream_files(timeout: int = 30) -> tuple[list[str], str]:
-    """列出 4 个目标目录下的所有配置文件。
+def dir_of(path: str) -> str:
+    """从仓库相对路径里取出它属于哪个目标目录。
 
-    返回 (文件相对路径列表, 来源说明)。能用 GitLab API 枚举就用 API ——
-    这样上游新增 hysteria2/3 之类的目录也能自动跟上；API 不可用时退回兜底清单。
+    ★ 不能用 `path.split('/')[0]`：加了 ip/ipp 前缀后第一段是 'backup'。
+    """
+    for seg in str(path).split("/"):
+        if seg in WANT_DIRS:
+            return seg
+    return ""
+
+
+def list_upstream_files(prefix: str, timeout: int = 30) -> tuple[list[str], str]:
+    """列出目标那 4 个目录下的所有配置文件。
+
+    返回 (仓库相对路径列表, 来源说明)。能用 GitLab API 枚举就用 API ——
+    这样上游新增/删除编号子目录也能自动跟上；API 不可用时退回兜底清单。
     """
     cfg_re = re.compile(r"^config\.(ya?ml|json)$", re.I)
+    order = {d: i for i, d in enumerate(WANT_DIRS)}
     try:
         found: list[str] = []
         for page in range(1, 6):          # 全仓库约 400 条，5 页足够
@@ -181,21 +250,20 @@ def list_upstream_files(timeout: int = 30) -> tuple[list[str], str]:
                 p = e.get("path") or ""
                 if e.get("type") != "blob" or not cfg_re.match(os.path.basename(p)):
                     continue
-                # ★ 只认根目录下的这 4 个，backup/.../ipp/clash.meta2 那些不算
-                if any(p.startswith(d + "/") for d in WANT_DIRS):
+                # ★ 必须带前缀匹配：否则 backup/.../ipp/clash.meta2 与根目录 clash.meta2
+                #   会被一起收进来 —— 那是两套完全不同的节点数据（见 SOURCE_PREFIX 注释）
+                if any(p.startswith(prefix + d + "/") for d in WANT_DIRS):
                     found.append(p)
             if len(data) < 100:
                 break
         if found:
-            order = {d: i for i, d in enumerate(WANT_DIRS)}
-            found.sort(key=lambda p: (order.get(p.split("/", 1)[0], 99), p))
+            found.sort(key=lambda p: (order.get(dir_of(p), 99), p))
             return found, "GitLab API 枚举"
     except Exception as e:               # noqa: BLE001
         print(f"[提示] GitLab API 枚举失败（{type(e).__name__}: {e}），改用兜底清单")
 
-    order = {d: i for i, d in enumerate(WANT_DIRS)}
-    fb = [p for p in FALLBACK_FILES if any(p.startswith(d + "/") for d in WANT_DIRS)]
-    fb.sort(key=lambda p: (order.get(p.split("/", 1)[0], 99), p))
+    fb = sorted(FALLBACK_FILES.get(SOURCE, []),
+                key=lambda p: (order.get(dir_of(p), 99), p))
     return fb, "兜底清单"
 
 
@@ -349,47 +417,60 @@ def parse_hysteria2(d: dict, src: str) -> dict:
     return _drop_empty(node)
 
 
+def unsupported_reason(t) -> str:
+    """把"不收这个协议"讲清楚，而不是笼统报"不支持"。"""
+    key = str(t or "").strip().lower()
+    if key in KNOWN_UNSUPPORTED:
+        return f"已知但故意不收 -> {key}（{KNOWN_UNSUPPORTED[key]}）"
+    return f"不支持的节点类型 -> {key or '(空)'}"
+
+
 def parse_file(text: str, src: str):
     """按**内容**判格式 —— 上游目录里的协议会轮换，不能按目录名判。
 
-    返回 (节点列表, 跳过原因 or None)。
+    返回 (节点列表, 备注列表)。备注解释"为什么这个文件没贡献/少贡献了节点"。
     """
     try:
         data = _load_any(text)
     except Exception as e:                # noqa: BLE001
-        return [], f"解析失败({type(e).__name__}: {e})"
+        return [], [f"解析失败({type(e).__name__}: {e})"]
 
     if not isinstance(data, dict):
-        return [], "顶层不是对象"
+        return [], ["顶层不是对象"]
 
     # --- Clash / mihomo YAML：只取 proxies，它自带的端口/组/规则/DNS 全丢 ---
     if data.get("proxies"):
-        out = []
+        out, notes = [], []
         for p in data["proxies"]:
             if not isinstance(p, dict):
+                notes.append("proxies 里有一项不是对象，已跳过")
                 continue
             n = normalize_proxy(p, src)
             if n.get("type") in SUPPORTED_TYPES and n.get("server"):
                 out.append(n)
             else:
-                print(f"  [跳过] {src}: 不支持的节点类型 {n.get('type')!r}")
-        return out, (None if out else "proxies 里没有可收的节点")
+                note = unsupported_reason(n.get("type"))
+                notes.append(note)
+                print(f"  [跳过] {src}: {note}")
+        if not out and not notes:
+            notes.append("proxies 为空")
+        return out, notes
 
     # --- hysteria1 原生 JSON ---
     if "auth_str" in data and "server" in data:
         n = parse_hysteria1(data, src)
-        return ([n] if n.get("server") else []), None
+        return ([n] if n.get("server") else []), ([] if n.get("server") else ["缺少 server"])
 
     # --- hysteria2 原生 JSON ---
     if "auth" in data and ("tls" in data or "bandwidth" in data) and "server" in data:
         n = parse_hysteria2(data, src)
-        return ([n] if n.get("server") else []), None
+        return ([n] if n.get("server") else []), ([] if n.get("server") else ["缺少 server"])
 
-    # --- 其它（singbox 的 outbounds / shadowquic 的 outbound）本订阅不收 ---
-    for k in ("outbounds", "outbound"):
+    # --- 其它格式：本订阅不收，但要说清是哪种 ---
+    for k in ("outbounds", "outbound", "profiles", "inbounds"):
         if k in data:
-            return [], f"{k} 格式（不在本订阅收录范围）"
-    return [], "无法识别的格式"
+            return [], [f"是 {k} 结构（sing-box/mieru/shadowquic），不在本订阅收录范围"]
+    return [], ["无法识别的格式"]
 
 
 # --------------------------------------------------------------------------- #
@@ -463,12 +544,20 @@ def sanitize(nodes: list) -> list:
 # --------------------------------------------------------------------------- #
 
 def source_slot(src: str):
-    """'clash.meta2/2/config.yaml' -> ('cm2', '2')；顶层文件 -> ('cm2', '0')"""
+    """从仓库相对路径里取出 (目录缩写, 槽位)。
+
+    'clash.meta2/2/config.yaml'                    -> ('cm2', '2')
+    'clash.meta2/config.yaml'                      -> ('cm2', '0')
+    'backup/img/1/2/ipp/clash.meta2/1/config.yaml'  -> ('cm2', '1')
+
+    ★ 不能只看第一段：加了 ip/ipp 前缀后第一段是 'backup'。
+      要**找到出现在 WANT_DIRS 里的那一段**，再往右取槽位。
+    """
     parts = str(src).split("/")
-    d = parts[0] if parts else ""
-    abbr = DIR_ABBR.get(d, d or "node")
-    sub = "/".join(parts[1:-1]) or "0"       # 去掉目录名与文件名
-    return abbr, sub
+    for i, seg in enumerate(parts):
+        if seg in WANT_DIRS:
+            return DIR_ABBR[seg], ("/".join(parts[i + 1:-1]) or "0")
+    return (parts[0] if parts else "node"), ""
 
 
 def assign_names(nodes: list) -> None:
@@ -704,13 +793,17 @@ def header_comment(nodes: list, origins: list, counts: dict, source_desc: str) -
         "# 本文件由 GitHub Actions 自动生成 —— 请勿手工修改，下次运行会被覆盖。",
         "#",
         f"# 生成时间 : {now}",
-        f"# 数据源   : https://gitlab.com/free9999/ipupdate"
-        f"  ({' / '.join(WANT_DIRS)})",
+        f"# 数据源   : https://gitlab.com/free9999/ipupdate @ {BRANCH}",
+        f"# 抓取范围 : {SOURCE_PREFIX[SOURCE] or '（仓库根目录）'}"
+        f"{' / '.join(WANT_DIRS)}   [source={SOURCE}]",
         f"# 枚举方式 : {source_desc}",
         f"# 节点数   : {len(nodes)} 个（去重前 {counts['解析出节点']}，"
         f"纯拷贝重复 {counts['sha重复']}，跨格式重复 {counts['语义重复']}）",
         "#",
-        "# 节点来源（源目录 -> 节点名）:",
+        "# 该仓库存在三套同名目录（root / backup/.../ip / backup/.../ipp），内容并不相同。",
+        "# 本文件的来源见上面「抓取范围」；换来源用 --source root|ip|ipp。",
+        "#",
+        "# 节点来源（源文件 -> 节点名）:",
     ]
     for n, src in zip(nodes, origins):
         lines.append(
@@ -728,7 +821,7 @@ def header_comment(nodes: list, origins: list, counts: dict, source_desc: str) -
 # --------------------------------------------------------------------------- #
 
 def main() -> int:
-    global FLAG_MODE
+    global FLAG_MODE, SOURCE
 
     here = os.path.dirname(os.path.abspath(__file__))
     root = os.path.dirname(here)              # 仓库根（脚本在 scripts/ 下）
@@ -736,6 +829,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=os.path.join(root, "main.yaml"))
     ap.add_argument("--report", default=os.path.join(root, "node_report.json"))
+    ap.add_argument("--source", choices=sorted(SOURCE_PREFIX), default=DEFAULT_SOURCE,
+                    help="抓哪一套同名目录（三套内容不同，见 SOURCE_PREFIX 注释）："
+                         "ipp=backup/img/1/2/ipp/（默认，6/4/4/4 共 18 个文件）；"
+                         "ip=backup/img/1/2/ip/（同样 6/4/4/4，但内容与 ipp 不同）；"
+                         "root=仓库根目录（3/2/2/2 共 9 个文件，且大多为 IPv6 节点）")
     ap.add_argument("--flag-mode", choices=list(FLAG_MODES), default="emoji",
                     help="节点名后缀的国家标识：emoji=🇫🇷（默认） code=FR both=🇫🇷FR none=不加")
     ap.add_argument("--timeout", type=int, default=30)
@@ -743,16 +841,21 @@ def main() -> int:
     args = ap.parse_args()
 
     FLAG_MODE = args.flag_mode
+    SOURCE = args.source
+    prefix = SOURCE_PREFIX[SOURCE]
 
     # ---- 1. 枚举要抓的文件 ----
-    files, source_desc = list_upstream_files(args.timeout)
-    files = [f for f in files if any(f.startswith(d + "/") for d in WANT_DIRS)]
-    print(f"[1/5] 待抓取 {len(files)} 个文件（{source_desc}）")
+    files, source_desc = list_upstream_files(prefix, args.timeout)
+    # ★ 再兜一层前缀过滤：兜底清单是按 source 生成的，但 API 枚举走的是全仓库；
+    #   不加这道过滤，root 的 clash.meta2 会和 ipp 的 clash.meta2 混进同一份订阅。
+    files = [f for f in files if any(f.startswith(prefix + d + "/") for d in WANT_DIRS)]
+    print(f"[1/5] 来源 {SOURCE}（{prefix or '仓库根目录'}）"
+          f"待抓取 {len(files)} 个文件（{source_desc}）")
     for f in files:
         print(f"        {f}")
 
     # ---- 2. 抓取 + 解析 ----
-    raw, errors, skipped = [], [], []
+    raw, errors, skipped, node_notes = [], [], [], []
     for path in files:
         try:
             text = fetch_text(path, args.timeout)
@@ -761,11 +864,15 @@ def main() -> int:
             errors.append({"file": path, "error": f"下载失败: {e}"})
             print(f"  [失败] {path}: 下载失败")
             continue
-        nodes, why = parse_file(text, path)
+        nodes, notes = parse_file(text, path)
         if not nodes:
-            skipped.append({"file": path, "reason": why or "无节点"})
-            print(f"  [跳过] {path}: {why or '无节点'}")
+            reason = "; ".join(notes) or "无节点"
+            skipped.append({"file": path, "reason": reason})
+            print(f"  [跳过] {path}: {reason}")
             continue
+        if notes:
+            # 文件里既有收下的、也有跳过的（典型：quick/ 目录里混着 anytls / mieru）
+            node_notes.append({"file": path, "notes": notes})
         for n in nodes:
             print(f"  [ok]   {path}: {n['type']} {fmt_addr(n['server'], n['port'])}")
         raw.extend(nodes)
@@ -803,7 +910,8 @@ def main() -> int:
     counts = {"解析出节点": len(raw), "去重后节点": len(uniq),
               "sha重复": len(dup_sha), "语义重复": len(dup_sem),
               "裁掉字段": len(dropped),
-              "解析失败": len(errors), "跳过文件": len(skipped)}
+              "解析失败": len(errors), "整文件跳过": len(skipped),
+              "部分跳过": len(node_notes)}
     text_out = header_comment(uniq, origins, counts, source_desc) + body
 
     print(f"[3/5] 节点清单:")
@@ -814,18 +922,23 @@ def main() -> int:
     ipv6_cnt = sum(1 for n in uniq if is_ipv6(n["server"]))
     print(f"[4/5] IPv4 {len(uniq) - ipv6_cnt} 个 / IPv6 {ipv6_cnt} 个"
           f"（配置已强制 ipv6: true）")
-    if errors or skipped:
-        print(f"[5/5] 未收录: 失败 {len(errors)}，跳过 {len(skipped)}")
+    if errors or skipped or node_notes:
+        print(f"[5/5] 未收录: 下载/解析失败 {len(errors)}，整文件跳过 {len(skipped)}，"
+              f"文件内部分跳过 {len(node_notes)}")
         for e in errors:
             print(f"        ✗ {e['file']}: {e['error']}")
         for s in skipped:
             print(f"        - {s['file']}: {s['reason']}")
+        for p in node_notes:
+            print(f"        - {p['file']}: {'; '.join(p['notes'])}")
 
     # ---- 5. 落盘 ----
     report = {
         "generated_at": datetime.datetime.now(datetime.timezone.utc)
                         .isoformat(timespec="seconds"),
         "upstream": f"https://gitlab.com/free9999/ipupdate @ {BRANCH}",
+        "source": SOURCE,
+        "source_prefix": SOURCE_PREFIX[SOURCE],
         "dirs": WANT_DIRS,
         "enumerate": source_desc,
         "flag_mode": FLAG_MODE,
@@ -840,6 +953,7 @@ def main() -> int:
         "dropped_fields": dropped,
         "errors": errors,
         "skipped": skipped,
+        "partial_skips": node_notes,
     }
     for n in uniq:
         report["by_type"][n["type"]] = report["by_type"].get(n["type"], 0) + 1

@@ -1,6 +1,8 @@
 {
-  "generated_at": "2026-09-15T23:16:00+00:00",
+  "generated_at": "2026-09-15T23:30:31+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
+  "source": "ipp",
+  "source_prefix": "backup/img/1/2/ipp/",
   "dirs": [
     "clash.meta2",
     "quick",
@@ -10,92 +12,144 @@
   "enumerate": "GitLab API 枚举",
   "flag_mode": "emoji",
   "counts": {
-    "解析出节点": 9,
-    "去重后节点": 6,
-    "sha重复": 2,
+    "解析出节点": 17,
+    "去重后节点": 8,
+    "sha重复": 8,
     "语义重复": 1,
-    "裁掉字段": 1,
+    "裁掉字段": 0,
     "解析失败": 0,
-    "跳过文件": 0
+    "整文件跳过": 1,
+    "部分跳过": 0
   },
   "by_type": {
-    "hysteria2": 3,
-    "hysteria": 3
+    "hysteria": 6,
+    "anytls": 1,
+    "hysteria2": 1
   },
   "nodes": [
     {
+      "name": "cm2-1 🇫🇷",
+      "type": "hysteria",
+      "server": "62.210.70.191",
+      "port": 23556,
+      "src": "backup/img/1/2/ipp/clash.meta2/1/config.yaml"
+    },
+    {
       "name": "cm2-2 🇫🇷",
-      "type": "hysteria2",
-      "server": "2001:bc8:32d7:302::17",
-      "port": 20088,
-      "src": "clash.meta2/2/config.yaml"
-    },
-    {
-      "name": "cm2-3 🇫🇷",
       "type": "hysteria",
-      "server": "2001:bc8:32d7:17b::2",
-      "port": 11000,
-      "src": "clash.meta2/3/config.yaml"
+      "server": "163.172.117.163",
+      "port": 36699,
+      "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml"
     },
     {
-      "name": "qk-3 🇺🇸",
+      "name": "cm2-5 🇺🇸",
       "type": "hysteria",
-      "server": "2a14:7584:d099::a",
-      "port": 26691,
-      "src": "quick/3/config.yaml"
+      "server": "2a14:7584:d097::a",
+      "port": 54177,
+      "src": "backup/img/1/2/ipp/clash.meta2/5/config.yaml"
     },
     {
-      "name": "qk-0 🇩🇪",
+      "name": "qk-1",
+      "type": "anytls",
+      "server": "anytls2.864106.xyz",
+      "port": 19000,
+      "src": "backup/img/1/2/ipp/quick/1/config.yaml"
+    },
+    {
+      "name": "qk-2 🇺🇸",
       "type": "hysteria",
-      "server": "5.83.129.143",
-      "port": 26691,
-      "src": "quick/config.yaml"
+      "server": "198.200.57.142",
+      "port": 22335,
+      "src": "backup/img/1/2/ipp/quick/2/config.yaml"
     },
     {
-      "name": "hy2-2 🇫🇷",
-      "type": "hysteria2",
-      "server": "2001:bc8:32d7:302::11",
-      "port": 20088,
-      "src": "hysteria2/2/config.json"
+      "name": "qk-4",
+      "type": "hysteria",
+      "server": "tw-25.497489.xyz",
+      "port": 10099,
+      "src": "backup/img/1/2/ipp/quick/4/config.yaml"
     },
     {
-      "name": "hy2-0 🇫🇷",
+      "name": "hy-3 🇩🇪",
+      "type": "hysteria",
+      "server": "5.83.129.90",
+      "port": 54177,
+      "src": "backup/img/1/2/ipp/hysteria/3/config.json"
+    },
+    {
+      "name": "hy2-1 🇫🇷",
       "type": "hysteria2",
-      "server": "2001:bc8:32d7:17b::8",
+      "server": "2001:bc8:32d7:17b::3",
       "port": 22000,
-      "src": "hysteria2/config.json"
+      "src": "backup/img/1/2/ipp/hysteria2/1/config.json"
     }
   ],
   "duplicates_sha": [
     {
-      "src": "clash.meta2/config.yaml",
+      "src": "backup/img/1/2/ipp/clash.meta2/3/config.yaml",
       "type": "hysteria",
-      "server": "2001:bc8:32d7:17b::2",
-      "port": 11000
+      "server": "62.210.70.191",
+      "port": 23556
     },
     {
-      "src": "hysteria/config.json",
+      "src": "backup/img/1/2/ipp/clash.meta2/4/config.yaml",
       "type": "hysteria",
-      "server": "2001:bc8:32d7:17b::2",
-      "port": 11000
+      "server": "62.210.70.191",
+      "port": 23556
+    },
+    {
+      "src": "backup/img/1/2/ipp/clash.meta2/6/config.yaml",
+      "type": "hysteria",
+      "server": "2a14:7584:d097::a",
+      "port": 54177
+    },
+    {
+      "src": "backup/img/1/2/ipp/hysteria/2/config.json",
+      "type": "hysteria",
+      "server": "62.210.70.191",
+      "port": 23556
+    },
+    {
+      "src": "backup/img/1/2/ipp/hysteria/4/config.json",
+      "type": "hysteria",
+      "server": "5.83.129.90",
+      "port": 54177
+    },
+    {
+      "src": "backup/img/1/2/ipp/hysteria2/2/config.json",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::3",
+      "port": 22000
+    },
+    {
+      "src": "backup/img/1/2/ipp/hysteria2/3/config.json",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::3",
+      "port": 22000
+    },
+    {
+      "src": "backup/img/1/2/ipp/hysteria2/4/config.json",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::3",
+      "port": 22000
     }
   ],
   "duplicates_semantic": [
     {
-      "src": "hysteria/2/config.json",
-      "dup_of": "clash.meta2/3/config.yaml",
+      "src": "backup/img/1/2/ipp/hysteria/1/config.json",
+      "dup_of": "backup/img/1/2/ipp/clash.meta2/1/config.yaml",
       "type": "hysteria",
-      "server": "2001:bc8:32d7:17b::2",
-      "port": 11000
+      "server": "62.210.70.191",
+      "port": 23556
     }
   ],
-  "dropped_fields": [
-    {
-      "src": "clash.meta2/2/config.yaml",
-      "field": "protocol",
-      "value": "udp"
-    }
-  ],
+  "dropped_fields": [],
   "errors": [],
-  "skipped": []
+  "skipped": [
+    {
+      "file": "backup/img/1/2/ipp/quick/3/config.yaml",
+      "reason": "已知但故意不收 -> mieru（实测该源节点持续连不上（本地 fetch_nodes.py 的 --mieru 默认即为排除））"
+    }
+  ],
+  "partial_skips": []
 }

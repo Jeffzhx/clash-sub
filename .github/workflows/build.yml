@@ -24,6 +24,13 @@ concurrency:
   group: build-subscription
   cancel-in-progress: false
 
+# 抓取范围（这个仓库里有三套同名目录，内容并不相同）：
+#   ipp  = backup/img/1/2/ipp/  18 个文件（6/4/4/4）-> 8 个节点，IPv4 6 / IPv6 2   ← 默认
+#   ip   = backup/img/1/2/ip/   18 个文件（6/4/4/4）-> 8 个节点（与 ipp 节点完全相同）
+#   root = 仓库根目录            9 个文件（3/2/2/2）-> 6 个节点，IPv4 1 / IPv6 5（可用性差）
+env:
+  SOURCE: ipp
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,7 +52,7 @@ jobs:
           pip install maxminddb || echo "maxminddb 装不上 -> 跳过国家标识"
 
       - name: 生成订阅
-        run: python scripts/build_sub.py --out main.yaml --report node_report.json
+        run: python scripts/build_sub.py --source "$SOURCE" --out main.yaml --report node_report.json
 
       - name: 提交变更
         run: |
