@@ -831,8 +831,10 @@ def main() -> int:
         "flag_mode": FLAG_MODE,
         "counts": counts,
         "by_type": {},
+        # 用 origins 而不是 n["_src"]：assign_names() 已经把 `_` 前缀的键清掉了
         "nodes": [{"name": n["name"], "type": n["type"], "server": n["server"],
-                   "port": n["port"], "src": n.get("_src")} for n in uniq],
+                   "port": n["port"], "src": origins[i]}
+                  for i, n in enumerate(uniq)],
         "duplicates_sha": dup_sha,
         "duplicates_semantic": dup_sem,
         "dropped_fields": dropped,

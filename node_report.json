@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T23:13:10+00:00",
+  "generated_at": "2026-09-15T23:16:00+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "dirs": [
     "clash.meta2",
@@ -28,42 +28,42 @@
       "type": "hysteria2",
       "server": "2001:bc8:32d7:302::17",
       "port": 20088,
-      "src": null
+      "src": "clash.meta2/2/config.yaml"
     },
     {
       "name": "cm2-3 🇫🇷",
       "type": "hysteria",
       "server": "2001:bc8:32d7:17b::2",
       "port": 11000,
-      "src": null
+      "src": "clash.meta2/3/config.yaml"
     },
     {
       "name": "qk-3 🇺🇸",
       "type": "hysteria",
       "server": "2a14:7584:d099::a",
       "port": 26691,
-      "src": null
+      "src": "quick/3/config.yaml"
     },
     {
       "name": "qk-0 🇩🇪",
       "type": "hysteria",
       "server": "5.83.129.143",
       "port": 26691,
-      "src": null
+      "src": "quick/config.yaml"
     },
     {
       "name": "hy2-2 🇫🇷",
       "type": "hysteria2",
       "server": "2001:bc8:32d7:302::11",
       "port": 20088,
-      "src": null
+      "src": "hysteria2/2/config.json"
     },
     {
       "name": "hy2-0 🇫🇷",
       "type": "hysteria2",
       "server": "2001:bc8:32d7:17b::8",
       "port": 22000,
-      "src": null
+      "src": "hysteria2/config.json"
     }
   ],
   "duplicates_sha": [
