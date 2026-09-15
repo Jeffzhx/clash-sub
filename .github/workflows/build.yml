@@ -1,0 +1,66 @@
+name: build-subscription
+
+# 什么时候跑
+on:
+  schedule:
+    # 每 2 天一次。UTC 03:17 = 北京时间 11:17（避开整点，CI 排队少一些）。
+    # ⚠ GitHub 的定时任务**只在默认分支上跑**，所以默认分支必须是 main。
+    - cron: '17 3 */2 * *'
+  push:
+    branches: [main]
+    # 只在「生成逻辑变了」时重建。刻意不监听 main.yaml —— 否则机器人自己的提交
+    # 会把 workflow 再次触发，形成提交风暴。
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/**'
+  workflow_dispatch:          # 也能在 Actions 页面点一下手动跑
+
+# 把生成结果提交回仓库需要写权限
+permissions:
+  contents: write
+
+# 定时触发与手动触发撞一起时排队，不要叠跑
+concurrency:
+  group: build-subscription
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+          # maxminddb 只用来给节点名加国家旗帜（🇫🇷 / 🇩🇪 ...）。
+          # 装不上就自动降级：节点名不带旗帜，订阅照样能生成。
+          pip install maxminddb || echo "maxminddb 装不上 -> 跳过国家标识"
+
+      - name: 生成订阅
+        run: python scripts/build_sub.py --out main.yaml --report node_report.json
+
+      - name: 提交变更
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add main.yaml node_report.json
+          if git diff --cached --quiet; then
+            echo "内容无变化，跳过提交"
+          else
+            git commit -m "chore: 刷新订阅 $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
+# 关于「定时任务会莫名其妙停掉」：
+#   GitHub 规定，公开仓库若连续 60 天没有任何提交，会自动禁用它的定时工作流。
+#   本仓库每次运行都会把生成时间写进 main.yaml 的头部注释，所以**每次运行内容都不同**、
+#   必然产生一次提交 —— 仓库永远不会进入 60 天静默期，定时任务不会被停。
+#   代价是历史里每 2 天多一条 chore 提交，这是刻意的取舍。

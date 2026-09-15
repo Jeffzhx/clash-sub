@@ -1,0 +1,8 @@
+# 本地跑生成器时留下的临时物，不要进仓库
+__pycache__/
+*.pyc
+kernel-test/
+_run*.log
+_probe*.log
+_probe*.py
+_*.txt

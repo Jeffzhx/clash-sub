@@ -1,0 +1,176 @@
+# ========================================================================
+# 本文件由 GitHub Actions 自动生成 —— 请勿手工修改，下次运行会被覆盖。
+#
+# 生成时间 : 2026-09-15 23:13 UTC
+# 数据源   : https://gitlab.com/free9999/ipupdate  (clash.meta2 / quick / hysteria / hysteria2)
+# 枚举方式 : GitLab API 枚举
+# 节点数   : 6 个（去重前 9，纯拷贝重复 2，跨格式重复 1）
+#
+# 节点来源（源目录 -> 节点名）:
+#   cm2-2 🇫🇷           hysteria2  [2001:bc8:32d7:302::17]:20088  <- clash.meta2/2/config.yaml
+#   cm2-3 🇫🇷           hysteria   [2001:bc8:32d7:17b::2]:11000   <- clash.meta2/3/config.yaml
+#   qk-3 🇺🇸            hysteria   [2a14:7584:d099::a]:26691      <- quick/3/config.yaml
+#   qk-0 🇩🇪            hysteria   5.83.129.143:26691             <- quick/config.yaml
+#   hy2-2 🇫🇷           hysteria2  [2001:bc8:32d7:302::11]:20088  <- hysteria2/2/config.json
+#   hy2-0 🇫🇷           hysteria2  [2001:bc8:32d7:17b::8]:22000   <- hysteria2/config.json
+#
+# 这些是公开的免费节点，随时可能失效或变慢 —— 自动选择组会自己挑活的。
+# ========================================================================
+log-level: info
+mode: rule
+ipv6: true
+unified-delay: true
+tcp-concurrent: true
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  respect-rules: true
+  default-nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  nameserver:
+  - https://dns.alidns.com/dns-query
+  - https://doh.pub/dns-query
+  proxy-server-nameserver:
+  - https://dns.alidns.com/dns-query
+  - https://doh.pub/dns-query
+  fallback:
+  - https://1.1.1.1/dns-query
+  - https://8.8.8.8/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+    - 240.0.0.0/4
+    - 0.0.0.0/32
+proxies:
+- name: cm2-2 🇫🇷
+  type: hysteria2
+  server: 2001:bc8:32d7:302::17
+  port: 20088
+  password: dongtaiwang.com
+  sni: apple.com
+  skip-cert-verify: true
+  alpn:
+  - h3
+  up: 11
+  down: 55
+- name: cm2-3 🇫🇷
+  type: hysteria
+  server: 2001:bc8:32d7:17b::2
+  port: 11000
+  auth-str: dongtaiwang.com
+  sni: apple.com
+  skip-cert-verify: true
+  alpn:
+  - h3
+  protocol: udp
+  up: 11
+  down: 55
+- name: qk-3 🇺🇸
+  type: hysteria
+  server: 2a14:7584:d099::a
+  port: 26691
+  auth-str: dongtaiwang.com
+  sni: apple.com
+  skip-cert-verify: true
+  alpn:
+  - h3
+  protocol: udp
+  up: 11
+  down: 55
+- name: qk-0 🇩🇪
+  type: hysteria
+  server: 5.83.129.143
+  port: 26691
+  auth-str: dongtaiwang.com
+  sni: apple.com
+  skip-cert-verify: true
+  alpn:
+  - h3
+  protocol: udp
+  up: 11
+  down: 55
+- name: hy2-2 🇫🇷
+  type: hysteria2
+  server: 2001:bc8:32d7:302::11
+  port: 20088
+  password: dongtaiwang.com
+  up: 11
+  down: 55
+  sni: apple.com
+  skip-cert-verify: true
+  hop-interval: 300
+- name: hy2-0 🇫🇷
+  type: hysteria2
+  server: 2001:bc8:32d7:17b::8
+  port: 22000
+  password: dongtaiwang.com
+  up: 11
+  down: 55
+  sni: apple.com
+  skip-cert-verify: true
+  hop-interval: 300
+proxy-groups:
+- name: 节点选择
+  type: select
+  proxies:
+  - 自动选择
+  - AI
+  - 全球直连
+  - cm2-2 🇫🇷
+  - cm2-3 🇫🇷
+  - qk-3 🇺🇸
+  - qk-0 🇩🇪
+  - hy2-2 🇫🇷
+  - hy2-0 🇫🇷
+- name: 自动选择
+  type: url-test
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 50
+  lazy: false
+  proxies:
+  - cm2-2 🇫🇷
+  - cm2-3 🇫🇷
+  - qk-3 🇺🇸
+  - qk-0 🇩🇪
+  - hy2-2 🇫🇷
+  - hy2-0 🇫🇷
+- name: AI
+  type: url-test
+  url: https://chatgpt.com/cdn-cgi/trace
+  expected-status: 200
+  timeout: 5000
+  interval: 300
+  tolerance: 100
+  lazy: false
+  max-failed-times: 2
+  proxies:
+  - cm2-2 🇫🇷
+  - cm2-3 🇫🇷
+  - qk-3 🇺🇸
+  - qk-0 🇩🇪
+  - hy2-2 🇫🇷
+  - hy2-0 🇫🇷
+- name: 全球直连
+  type: select
+  proxies:
+  - DIRECT
+  - 全球拦截
+- name: 全球拦截
+  type: select
+  proxies:
+  - REJECT
+  - DIRECT
+rules:
+- GEOIP,private,DIRECT,no-resolve
+- GEOSITE,openai,AI
+- GEOSITE,anthropic,AI
+- GEOSITE,google-gemini,AI
+- GEOSITE,category-ai-!cn,AI
+- GEOSITE,cn,全球直连
+- GEOIP,CN,全球直连,no-resolve
+- MATCH,节点选择
