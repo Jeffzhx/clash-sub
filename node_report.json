@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-11T10:04:29+00:00",
+  "generated_at": "2026-10-13T10:41:05+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -13,16 +13,16 @@
   "flag_mode": "emoji",
   "counts": {
     "解析出节点": 17,
-    "去重后节点": 8,
-    "sha重复": 8,
-    "语义重复": 1,
+    "去重后节点": 10,
+    "sha重复": 7,
+    "语义重复": 0,
     "裁掉字段": 0,
     "解析失败": 0,
     "整文件跳过": 1,
     "部分跳过": 0
   },
   "by_type": {
-    "hysteria": 6,
+    "hysteria": 8,
     "anytls": 1,
     "hysteria2": 1
   },
@@ -31,7 +31,7 @@
       "name": "cm2-1 🇫🇷",
       "type": "hysteria",
       "server": "62.210.70.191",
-      "port": 23556,
+      "port": 24667,
       "src": "backup/img/1/2/ipp/clash.meta2/1/config.yaml"
     },
     {
@@ -40,6 +40,13 @@
       "server": "163.172.117.163",
       "port": 36699,
       "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml"
+    },
+    {
+      "name": "cm2-3 🇫🇷",
+      "type": "hysteria",
+      "server": "62.210.70.191",
+      "port": 23556,
+      "src": "backup/img/1/2/ipp/clash.meta2/3/config.yaml"
     },
     {
       "name": "cm2-5 🇺🇸",
@@ -70,6 +77,13 @@
       "src": "backup/img/1/2/ipp/quick/4/config.yaml"
     },
     {
+      "name": "hy-1 🇺🇸",
+      "type": "hysteria",
+      "server": "107.149.207.185",
+      "port": 443,
+      "src": "backup/img/1/2/ipp/hysteria/1/config.json"
+    },
+    {
       "name": "hy-3 🇩🇪",
       "type": "hysteria",
       "server": "5.83.129.90",
@@ -86,12 +100,6 @@
   ],
   "duplicates_sha": [
     {
-      "src": "backup/img/1/2/ipp/clash.meta2/3/config.yaml",
-      "type": "hysteria",
-      "server": "62.210.70.191",
-      "port": 23556
-    },
-    {
       "src": "backup/img/1/2/ipp/clash.meta2/4/config.yaml",
       "type": "hysteria",
       "server": "62.210.70.191",
@@ -106,8 +114,8 @@
     {
       "src": "backup/img/1/2/ipp/hysteria/2/config.json",
       "type": "hysteria",
-      "server": "62.210.70.191",
-      "port": 23556
+      "server": "107.149.207.185",
+      "port": 443
     },
     {
       "src": "backup/img/1/2/ipp/hysteria/4/config.json",
@@ -134,15 +142,7 @@
       "port": 22000
     }
   ],
-  "duplicates_semantic": [
-    {
-      "src": "backup/img/1/2/ipp/hysteria/1/config.json",
-      "dup_of": "backup/img/1/2/ipp/clash.meta2/1/config.yaml",
-      "type": "hysteria",
-      "server": "62.210.70.191",
-      "port": 23556
-    }
-  ],
+  "duplicates_semantic": [],
   "dropped_fields": [],
   "errors": [],
   "skipped": [
