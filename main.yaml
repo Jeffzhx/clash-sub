@@ -1,11 +1,11 @@
 # ========================================================================
 # 本文件由 GitHub Actions 自动生成 —— 请勿手工修改，下次运行会被覆盖。
 #
-# 生成时间 : 2026-10-17 07:51 UTC
+# 生成时间 : 2026-10-19 08:58 UTC
 # 数据源   : https://gitlab.com/free9999/ipupdate @ master
 # 抓取范围 : backup/img/1/2/ipp/clash.meta2 / quick / hysteria / hysteria2   [source=ipp]
 # 枚举方式 : GitLab API 枚举
-# 节点数   : 10 个（去重前 17，纯拷贝重复 7，跨格式重复 0）
+# 节点数   : 9 个（去重前 17，纯拷贝重复 8，跨格式重复 0）
 #
 # 该仓库存在三套同名目录（root / backup/.../ip / backup/.../ipp），内容并不相同。
 # 本文件的来源见上面「抓取范围」；换来源用 --source root|ip|ipp。
@@ -15,10 +15,9 @@
 #   cm2-2 🇫🇷           hysteria   163.172.117.163:36699          <- backup/img/1/2/ipp/clash.meta2/2/config.yaml
 #   cm2-3 🇫🇷           hysteria   62.210.70.191:23556            <- backup/img/1/2/ipp/clash.meta2/3/config.yaml
 #   cm2-5 🇺🇸           hysteria   [2a14:7584:d097::a]:54177      <- backup/img/1/2/ipp/clash.meta2/5/config.yaml
-#   qk-1               anytls     anytls2.864106.xyz:19000       <- backup/img/1/2/ipp/quick/1/config.yaml
+#   qk-1               hysteria   tw-25.497489.xyz:10099         <- backup/img/1/2/ipp/quick/1/config.yaml
 #   qk-2 🇺🇸            hysteria   198.200.57.142:22335           <- backup/img/1/2/ipp/quick/2/config.yaml
-#   qk-4               hysteria   tw-25.497489.xyz:10099         <- backup/img/1/2/ipp/quick/4/config.yaml
-#   hy-1 🇺🇸            hysteria   107.149.207.185:443            <- backup/img/1/2/ipp/hysteria/1/config.json
+#   hy-1 🇺🇸            hysteria   137.175.82.44:443              <- backup/img/1/2/ipp/hysteria/1/config.json
 #   hy-3 🇩🇪            hysteria   5.83.129.90:54177              <- backup/img/1/2/ipp/hysteria/3/config.json
 #   hy2-1 🇫🇷           hysteria2  [2001:bc8:32d7:17b::3]:22000   <- backup/img/1/2/ipp/hysteria2/1/config.json
 #
@@ -103,11 +102,17 @@ proxies:
   up: 11
   down: 55
 - name: qk-1
-  type: anytls
-  server: anytls2.864106.xyz
-  port: 19000
-  password: github.com/Alvin9999-newpac/fanqiang
-  sni: anytls2.864106.xyz
+  type: hysteria
+  server: tw-25.497489.xyz
+  port: 10099
+  auth-str: github.com/Alvin9999-newpac/fanqiang
+  sni: tw-25.497489.xyz
+  skip-cert-verify: false
+  alpn:
+  - h3
+  protocol: udp
+  up: 20
+  down: 20
 - name: qk-2 🇺🇸
   type: hysteria
   server: 198.200.57.142
@@ -120,27 +125,15 @@ proxies:
   protocol: udp
   up: 11
   down: 55
-- name: qk-4
-  type: hysteria
-  server: tw-25.497489.xyz
-  port: 10099
-  auth-str: github.com/Alvin9999-newpac/fanqiang
-  sni: tw-25.497489.xyz
-  skip-cert-verify: false
-  alpn:
-  - h3
-  protocol: udp
-  up: 20
-  down: 20
 - name: hy-1 🇺🇸
   type: hysteria
-  server: 107.149.207.185
+  server: 137.175.82.44
   port: 443
   protocol: udp
   up: 11
   down: 55
   auth-str: dongtaiwang.com
-  sni: www.bing.com
+  sni: bing.com
   skip-cert-verify: true
   alpn:
   - h3
@@ -181,7 +174,6 @@ proxy-groups:
   - cm2-5 🇺🇸
   - qk-1
   - qk-2 🇺🇸
-  - qk-4
   - hy-1 🇺🇸
   - hy-3 🇩🇪
   - hy2-1 🇫🇷
@@ -198,7 +190,6 @@ proxy-groups:
   - cm2-5 🇺🇸
   - qk-1
   - qk-2 🇺🇸
-  - qk-4
   - hy-1 🇺🇸
   - hy-3 🇩🇪
   - hy2-1 🇫🇷
@@ -218,7 +209,6 @@ proxy-groups:
   - cm2-5 🇺🇸
   - qk-1
   - qk-2 🇺🇸
-  - qk-4
   - hy-1 🇺🇸
   - hy-3 🇩🇪
   - hy2-1 🇫🇷

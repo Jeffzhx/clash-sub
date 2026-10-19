@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-17T07:51:11+00:00",
+  "generated_at": "2026-10-19T08:58:08+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -13,8 +13,8 @@
   "flag_mode": "emoji",
   "counts": {
     "解析出节点": 17,
-    "去重后节点": 10,
-    "sha重复": 7,
+    "去重后节点": 9,
+    "sha重复": 8,
     "语义重复": 0,
     "裁掉字段": 0,
     "解析失败": 0,
@@ -23,7 +23,6 @@
   },
   "by_type": {
     "hysteria": 8,
-    "anytls": 1,
     "hysteria2": 1
   },
   "nodes": [
@@ -57,9 +56,9 @@
     },
     {
       "name": "qk-1",
-      "type": "anytls",
-      "server": "anytls2.864106.xyz",
-      "port": 19000,
+      "type": "hysteria",
+      "server": "tw-25.497489.xyz",
+      "port": 10099,
       "src": "backup/img/1/2/ipp/quick/1/config.yaml"
     },
     {
@@ -70,16 +69,9 @@
       "src": "backup/img/1/2/ipp/quick/2/config.yaml"
     },
     {
-      "name": "qk-4",
-      "type": "hysteria",
-      "server": "tw-25.497489.xyz",
-      "port": 10099,
-      "src": "backup/img/1/2/ipp/quick/4/config.yaml"
-    },
-    {
       "name": "hy-1 🇺🇸",
       "type": "hysteria",
-      "server": "107.149.207.185",
+      "server": "137.175.82.44",
       "port": 443,
       "src": "backup/img/1/2/ipp/hysteria/1/config.json"
     },
@@ -112,9 +104,15 @@
       "port": 54177
     },
     {
+      "src": "backup/img/1/2/ipp/quick/4/config.yaml",
+      "type": "hysteria",
+      "server": "tw-25.497489.xyz",
+      "port": 10099
+    },
+    {
       "src": "backup/img/1/2/ipp/hysteria/2/config.json",
       "type": "hysteria",
-      "server": "107.149.207.185",
+      "server": "137.175.82.44",
       "port": 443
     },
     {
