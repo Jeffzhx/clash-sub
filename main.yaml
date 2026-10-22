@@ -1,7 +1,7 @@
 # ========================================================================
 # 本文件由 GitHub Actions 自动生成 —— 请勿手工修改，下次运行会被覆盖。
 #
-# 生成时间 : 2026-10-21 08:38 UTC
+# 生成时间 : 2026-10-22 03:39 UTC
 # 数据源   : https://gitlab.com/free9999/ipupdate @ master
 # 抓取范围 : backup/img/1/2/ipp/clash.meta2 / quick / hysteria / hysteria2   [source=ipp]
 # 枚举方式 : GitLab API 枚举
@@ -166,7 +166,6 @@ proxy-groups:
   type: select
   proxies:
   - 自动选择
-  - AI
   - 全球直连
   - cm2-1 🇫🇷
   - cm2-2 🇫🇷
@@ -193,25 +192,6 @@ proxy-groups:
   - hy-1 🇺🇸
   - hy-3 🇩🇪
   - hy2-1 🇫🇷
-- name: AI
-  type: url-test
-  url: https://chatgpt.com/cdn-cgi/trace
-  expected-status: 200
-  timeout: 5000
-  interval: 300
-  tolerance: 100
-  lazy: false
-  max-failed-times: 2
-  proxies:
-  - cm2-1 🇫🇷
-  - cm2-2 🇫🇷
-  - cm2-3 🇫🇷
-  - cm2-5 🇺🇸
-  - qk-1
-  - qk-2 🇺🇸
-  - hy-1 🇺🇸
-  - hy-3 🇩🇪
-  - hy2-1 🇫🇷
 - name: 全球直连
   type: select
   proxies:
@@ -224,10 +204,6 @@ proxy-groups:
   - DIRECT
 rules:
 - GEOIP,private,DIRECT,no-resolve
-- GEOSITE,openai,AI
-- GEOSITE,anthropic,AI
-- GEOSITE,google-gemini,AI
-- GEOSITE,category-ai-!cn,AI
 - GEOSITE,cn,全球直连
 - GEOIP,CN,全球直连,no-resolve
 - MATCH,节点选择

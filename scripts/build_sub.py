@@ -171,9 +171,9 @@ ALLOWED_FIELDS = {
 }
 
 # 策略组名（规则里会引用，改名要同步改规则）
+# 注：原来还有一个 G_AI = "AI"，已整体移除，原因见 build_config() 的 rules 注释。
 G_MANUAL = "节点选择"
 G_AUTO = "自动选择"
-G_AI = "AI"
 G_DIRECT = "全球直连"
 G_BLOCK = "全球拦截"
 
@@ -720,7 +720,7 @@ def build_config(nodes: list) -> dict:
             "name": G_MANUAL,
             "type": "select",
             # 第一项就是默认值 -> 默认走自动择优；也能手动切到某个具体节点
-            "proxies": [G_AUTO, G_AI, G_DIRECT] + names,
+            "proxies": [G_AUTO, G_DIRECT] + names,
         },
         {
             "name": G_AUTO,
@@ -735,33 +735,19 @@ def build_config(nodes: list) -> dict:
             #   订阅转换工具处理坏。每个组各拿一份独立的副本。
             "proxies": list(names),
         },
-        {
-            "name": G_AI,
-            "type": "url-test",
-            # 探测点就是 AI 自己：被地区封锁会返回 403 拦截页
-            "url": "https://chatgpt.com/cdn-cgi/trace",
-            # ★ 默认值是 '*'（不校验状态码），会把 403 封锁页判成「节点可用」
-            "expected-status": 200,
-            "timeout": 5000,
-            "interval": 300,
-            "tolerance": 100,
-            "lazy": False,
-            "max-failed-times": 2,
-            "proxies": list(names),
-        },
         {"name": G_DIRECT, "type": "select", "proxies": ["DIRECT", G_BLOCK]},
         {"name": G_BLOCK, "type": "select", "proxies": ["REJECT", "DIRECT"]},
     ]
 
     # 规则顺序即优先级，第一条命中即停
+    # 关于「AI 专用组」的移除（2026-10 用户要求）：
+    #   原先有 4 条规则 openai / anthropic / google-gemini / category-ai-!cn -> AI 组。
+    #   它们必须排在 GEOIP,CN 之前才有效（这类站的 CDN 在国内有边缘节点，排后面会被
+    #   判成直连）。但排在最前面就等于「在 节点选择 里切节点对 AI 站点完全不生效」，
+    #   实际使用中优先级过高、想换条线都换不动，收益抵不过代价 —— 已整体删除。
+    #   现在 AI 站点和其它境外站点一样落到 MATCH -> 节点选择，随时可手动切换。
     rules = [
         "GEOIP,private,DIRECT,no-resolve",
-        # ★ AI 必须排在所有「大陆判定」之前：这类站点的 CDN 在国内有边缘节点，
-        #   一旦 GEOIP,CN 排前面，AI 流量会被判成直连，症状和「地区封锁」一模一样
-        f"GEOSITE,openai,{G_AI}",
-        f"GEOSITE,anthropic,{G_AI}",
-        f"GEOSITE,google-gemini,{G_AI}",
-        f"GEOSITE,category-ai-!cn,{G_AI}",
         f"GEOSITE,cn,{G_DIRECT}",
         f"GEOIP,CN,{G_DIRECT},no-resolve",
         f"MATCH,{G_MANUAL}",
