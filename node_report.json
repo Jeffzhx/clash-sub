@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T10:03:05+00:00",
+  "generated_at": "2026-10-31T09:42:45+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -29,7 +29,7 @@
     {
       "name": "cm2-1 🇫🇷",
       "type": "hysteria",
-      "server": "62.210.70.191",
+      "server": "62.210.28.175",
       "port": 24667,
       "src": "backup/img/1/2/ipp/clash.meta2/1/config.yaml"
     },
