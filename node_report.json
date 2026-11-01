@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T09:42:45+00:00",
+  "generated_at": "2026-11-01T10:31:52+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -55,18 +55,18 @@
       "src": "backup/img/1/2/ipp/clash.meta2/5/config.yaml"
     },
     {
-      "name": "qk-1",
-      "type": "hysteria",
-      "server": "tw-25.497489.xyz",
-      "port": 10099,
-      "src": "backup/img/1/2/ipp/quick/1/config.yaml"
-    },
-    {
       "name": "qk-2 🇺🇸",
       "type": "hysteria",
       "server": "198.200.57.142",
       "port": 22335,
       "src": "backup/img/1/2/ipp/quick/2/config.yaml"
+    },
+    {
+      "name": "qk-4",
+      "type": "hysteria",
+      "server": "tw-25.497489.xyz",
+      "port": 10099,
+      "src": "backup/img/1/2/ipp/quick/4/config.yaml"
     },
     {
       "name": "hy-1 🇺🇸",
@@ -104,10 +104,10 @@
       "port": 54177
     },
     {
-      "src": "backup/img/1/2/ipp/quick/4/config.yaml",
+      "src": "backup/img/1/2/ipp/quick/1/config.yaml",
       "type": "hysteria",
-      "server": "tw-25.497489.xyz",
-      "port": 10099
+      "server": "163.172.117.163",
+      "port": 36699
     },
     {
       "src": "backup/img/1/2/ipp/hysteria/2/config.json",
