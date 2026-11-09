@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-07T10:17:51+00:00",
+  "generated_at": "2026-11-09T11:39:23+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -13,8 +13,8 @@
   "flag_mode": "emoji",
   "counts": {
     "解析出节点": 17,
-    "去重后节点": 9,
-    "sha重复": 8,
+    "去重后节点": 10,
+    "sha重复": 7,
     "语义重复": 0,
     "裁掉字段": 0,
     "解析失败": 0,
@@ -22,7 +22,7 @@
     "部分跳过": 0
   },
   "by_type": {
-    "hysteria": 8,
+    "hysteria": 9,
     "hysteria2": 1
   },
   "nodes": [
@@ -72,8 +72,15 @@
       "name": "hy-1 🇺🇸",
       "type": "hysteria",
       "server": "137.175.82.44",
-      "port": 443,
+      "port": 20022,
       "src": "backup/img/1/2/ipp/hysteria/1/config.json"
+    },
+    {
+      "name": "hy-2 🇺🇸",
+      "type": "hysteria",
+      "server": "137.175.82.44",
+      "port": 443,
+      "src": "backup/img/1/2/ipp/hysteria/2/config.json"
     },
     {
       "name": "hy-3 🇩🇪",
@@ -108,12 +115,6 @@
       "type": "hysteria",
       "server": "163.172.117.163",
       "port": 36699
-    },
-    {
-      "src": "backup/img/1/2/ipp/hysteria/2/config.json",
-      "type": "hysteria",
-      "server": "137.175.82.44",
-      "port": 443
     },
     {
       "src": "backup/img/1/2/ipp/hysteria/4/config.json",
