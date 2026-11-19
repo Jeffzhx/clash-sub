@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T11:57:37+00:00",
+  "generated_at": "2026-11-19T11:46:00+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -29,16 +29,9 @@
     {
       "name": "cm2-1 🇫🇷",
       "type": "hysteria",
-      "server": "62.210.28.175",
+      "server": "62.210.124.132",
       "port": 24667,
       "src": "backup/img/1/2/ipp/clash.meta2/1/config.yaml"
-    },
-    {
-      "name": "cm2-2 🇫🇷",
-      "type": "hysteria",
-      "server": "163.172.117.163",
-      "port": 36699,
-      "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml"
     },
     {
       "name": "cm2-3 🇫🇷",
@@ -53,6 +46,13 @@
       "server": "2a14:7584:d097::a",
       "port": 54177,
       "src": "backup/img/1/2/ipp/clash.meta2/5/config.yaml"
+    },
+    {
+      "name": "qk-1 🇺🇸",
+      "type": "hysteria",
+      "server": "38.6.222.130",
+      "port": 11008,
+      "src": "backup/img/1/2/ipp/quick/1/config.yaml"
     },
     {
       "name": "qk-2 🇺🇸",
@@ -99,6 +99,12 @@
   ],
   "duplicates_sha": [
     {
+      "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml",
+      "type": "hysteria",
+      "server": "62.210.124.132",
+      "port": 24667
+    },
+    {
       "src": "backup/img/1/2/ipp/clash.meta2/4/config.yaml",
       "type": "hysteria",
       "server": "62.210.70.191",
@@ -109,12 +115,6 @@
       "type": "hysteria",
       "server": "2a14:7584:d097::a",
       "port": 54177
-    },
-    {
-      "src": "backup/img/1/2/ipp/quick/1/config.yaml",
-      "type": "hysteria",
-      "server": "163.172.117.163",
-      "port": 36699
     },
     {
       "src": "backup/img/1/2/ipp/hysteria/4/config.json",
