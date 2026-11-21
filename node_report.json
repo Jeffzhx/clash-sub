@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T11:46:00+00:00",
+  "generated_at": "2026-11-21T11:11:26+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -13,8 +13,8 @@
   "flag_mode": "emoji",
   "counts": {
     "解析出节点": 17,
-    "去重后节点": 10,
-    "sha重复": 7,
+    "去重后节点": 13,
+    "sha重复": 4,
     "语义重复": 0,
     "裁掉字段": 0,
     "解析失败": 0,
@@ -23,7 +23,7 @@
   },
   "by_type": {
     "hysteria": 9,
-    "hysteria2": 1
+    "hysteria2": 4
   },
   "nodes": [
     {
@@ -50,15 +50,15 @@
     {
       "name": "qk-1 🇺🇸",
       "type": "hysteria",
-      "server": "38.6.222.130",
+      "server": "38.6.222.131",
       "port": 11008,
       "src": "backup/img/1/2/ipp/quick/1/config.yaml"
     },
     {
       "name": "qk-2 🇺🇸",
       "type": "hysteria",
-      "server": "198.200.57.142",
-      "port": 22335,
+      "server": "38.6.222.132",
+      "port": 11008,
       "src": "backup/img/1/2/ipp/quick/2/config.yaml"
     },
     {
@@ -71,7 +71,7 @@
     {
       "name": "hy-1 🇺🇸",
       "type": "hysteria",
-      "server": "137.175.82.44",
+      "server": "137.175.82.41",
       "port": 20022,
       "src": "backup/img/1/2/ipp/hysteria/1/config.json"
     },
@@ -92,9 +92,30 @@
     {
       "name": "hy2-1 🇫🇷",
       "type": "hysteria2",
-      "server": "2001:bc8:32d7:17b::3",
+      "server": "2001:bc8:32d7:17b::4",
       "port": 22000,
       "src": "backup/img/1/2/ipp/hysteria2/1/config.json"
+    },
+    {
+      "name": "hy2-2 🇫🇷",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::6",
+      "port": 22000,
+      "src": "backup/img/1/2/ipp/hysteria2/2/config.json"
+    },
+    {
+      "name": "hy2-3 🇫🇷",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::7",
+      "port": 22000,
+      "src": "backup/img/1/2/ipp/hysteria2/3/config.json"
+    },
+    {
+      "name": "hy2-4 🇫🇷",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::8",
+      "port": 22000,
+      "src": "backup/img/1/2/ipp/hysteria2/4/config.json"
     }
   ],
   "duplicates_sha": [
@@ -121,24 +142,6 @@
       "type": "hysteria",
       "server": "5.83.129.90",
       "port": 54177
-    },
-    {
-      "src": "backup/img/1/2/ipp/hysteria2/2/config.json",
-      "type": "hysteria2",
-      "server": "2001:bc8:32d7:17b::3",
-      "port": 22000
-    },
-    {
-      "src": "backup/img/1/2/ipp/hysteria2/3/config.json",
-      "type": "hysteria2",
-      "server": "2001:bc8:32d7:17b::3",
-      "port": 22000
-    },
-    {
-      "src": "backup/img/1/2/ipp/hysteria2/4/config.json",
-      "type": "hysteria2",
-      "server": "2001:bc8:32d7:17b::3",
-      "port": 22000
     }
   ],
   "duplicates_semantic": [],
