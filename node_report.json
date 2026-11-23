@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T11:11:26+00:00",
+  "generated_at": "2026-11-23T12:55:03+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -12,18 +12,18 @@
   "enumerate": "GitLab API 枚举",
   "flag_mode": "emoji",
   "counts": {
-    "解析出节点": 17,
-    "去重后节点": 13,
-    "sha重复": 4,
+    "解析出节点": 18,
+    "去重后节点": 16,
+    "sha重复": 2,
     "语义重复": 0,
-    "裁掉字段": 0,
+    "裁掉字段": 6,
     "解析失败": 0,
-    "整文件跳过": 1,
+    "整文件跳过": 0,
     "部分跳过": 0
   },
   "by_type": {
-    "hysteria": 9,
-    "hysteria2": 4
+    "hysteria": 6,
+    "hysteria2": 10
   },
   "nodes": [
     {
@@ -34,18 +34,39 @@
       "src": "backup/img/1/2/ipp/clash.meta2/1/config.yaml"
     },
     {
+      "name": "cm2-2 🇫🇷",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::10",
+      "port": 22000,
+      "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml"
+    },
+    {
       "name": "cm2-3 🇫🇷",
-      "type": "hysteria",
-      "server": "62.210.70.191",
-      "port": 23556,
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::11",
+      "port": 22000,
       "src": "backup/img/1/2/ipp/clash.meta2/3/config.yaml"
     },
     {
-      "name": "cm2-5 🇺🇸",
-      "type": "hysteria",
-      "server": "2a14:7584:d097::a",
-      "port": 54177,
+      "name": "cm2-4 🇫🇷",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::13",
+      "port": 22000,
+      "src": "backup/img/1/2/ipp/clash.meta2/4/config.yaml"
+    },
+    {
+      "name": "cm2-5 🇫🇷",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::15",
+      "port": 22000,
       "src": "backup/img/1/2/ipp/clash.meta2/5/config.yaml"
+    },
+    {
+      "name": "cm2-6 🇫🇷",
+      "type": "hysteria2",
+      "server": "2001:bc8:32d7:17b::16",
+      "port": 22000,
+      "src": "backup/img/1/2/ipp/clash.meta2/6/config.yaml"
     },
     {
       "name": "qk-1 🇺🇸",
@@ -62,11 +83,11 @@
       "src": "backup/img/1/2/ipp/quick/2/config.yaml"
     },
     {
-      "name": "qk-4",
-      "type": "hysteria",
-      "server": "tw-25.497489.xyz",
-      "port": 10099,
-      "src": "backup/img/1/2/ipp/quick/4/config.yaml"
+      "name": "qk-3 🇺🇸",
+      "type": "hysteria2",
+      "server": "198.247.124.187",
+      "port": 23456,
+      "src": "backup/img/1/2/ipp/quick/3/config.yaml"
     },
     {
       "name": "hy-1 🇺🇸",
@@ -120,22 +141,10 @@
   ],
   "duplicates_sha": [
     {
-      "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml",
-      "type": "hysteria",
-      "server": "62.210.124.132",
-      "port": 24667
-    },
-    {
-      "src": "backup/img/1/2/ipp/clash.meta2/4/config.yaml",
-      "type": "hysteria",
-      "server": "62.210.70.191",
-      "port": 23556
-    },
-    {
-      "src": "backup/img/1/2/ipp/clash.meta2/6/config.yaml",
-      "type": "hysteria",
-      "server": "2a14:7584:d097::a",
-      "port": 54177
+      "src": "backup/img/1/2/ipp/quick/4/config.yaml",
+      "type": "hysteria2",
+      "server": "198.247.124.187",
+      "port": 23456
     },
     {
       "src": "backup/img/1/2/ipp/hysteria/4/config.json",
@@ -145,13 +154,39 @@
     }
   ],
   "duplicates_semantic": [],
-  "dropped_fields": [],
-  "errors": [],
-  "skipped": [
+  "dropped_fields": [
     {
-      "file": "backup/img/1/2/ipp/quick/3/config.yaml",
-      "reason": "已知但故意不收 -> mieru（实测该源节点持续连不上（本地 fetch_nodes.py 的 --mieru 默认即为排除））"
+      "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml",
+      "field": "udp",
+      "value": true
+    },
+    {
+      "src": "backup/img/1/2/ipp/clash.meta2/3/config.yaml",
+      "field": "udp",
+      "value": true
+    },
+    {
+      "src": "backup/img/1/2/ipp/clash.meta2/4/config.yaml",
+      "field": "udp",
+      "value": true
+    },
+    {
+      "src": "backup/img/1/2/ipp/clash.meta2/5/config.yaml",
+      "field": "udp",
+      "value": true
+    },
+    {
+      "src": "backup/img/1/2/ipp/clash.meta2/6/config.yaml",
+      "field": "udp",
+      "value": true
+    },
+    {
+      "src": "backup/img/1/2/ipp/quick/3/config.yaml",
+      "field": "udp",
+      "value": true
     }
   ],
+  "errors": [],
+  "skipped": [],
   "partial_skips": []
 }
