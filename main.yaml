@@ -1,11 +1,11 @@
 # ========================================================================
 # 本文件由 GitHub Actions 自动生成 —— 请勿手工修改，下次运行会被覆盖。
 #
-# 生成时间 : 2026-11-23 12:55 UTC
+# 生成时间 : 2026-11-25 13:01 UTC
 # 数据源   : https://gitlab.com/free9999/ipupdate @ master
 # 抓取范围 : backup/img/1/2/ipp/clash.meta2 / quick / hysteria / hysteria2   [source=ipp]
 # 枚举方式 : GitLab API 枚举
-# 节点数   : 16 个（去重前 18，纯拷贝重复 2，跨格式重复 0）
+# 节点数   : 16 个（去重前 18，纯拷贝重复 1，跨格式重复 1）
 #
 # 该仓库存在三套同名目录（root / backup/.../ip / backup/.../ipp），内容并不相同。
 # 本文件的来源见上面「抓取范围」；换来源用 --source root|ip|ipp。
@@ -146,6 +146,8 @@ proxies:
   server: 198.247.124.187
   port: 23456
   password: dongtaiwang.com
+  up: 10
+  down: 10
   sni: www.bing.com
   skip-cert-verify: true
   alpn:

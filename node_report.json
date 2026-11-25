@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T12:55:03+00:00",
+  "generated_at": "2026-11-25T13:01:35+00:00",
   "upstream": "https://gitlab.com/free9999/ipupdate @ master",
   "source": "ipp",
   "source_prefix": "backup/img/1/2/ipp/",
@@ -14,8 +14,8 @@
   "counts": {
     "解析出节点": 18,
     "去重后节点": 16,
-    "sha重复": 2,
-    "语义重复": 0,
+    "sha重复": 1,
+    "语义重复": 1,
     "裁掉字段": 6,
     "解析失败": 0,
     "整文件跳过": 0,
@@ -141,19 +141,21 @@
   ],
   "duplicates_sha": [
     {
-      "src": "backup/img/1/2/ipp/quick/4/config.yaml",
-      "type": "hysteria2",
-      "server": "198.247.124.187",
-      "port": 23456
-    },
-    {
       "src": "backup/img/1/2/ipp/hysteria/4/config.json",
       "type": "hysteria",
       "server": "5.83.129.90",
       "port": 54177
     }
   ],
-  "duplicates_semantic": [],
+  "duplicates_semantic": [
+    {
+      "src": "backup/img/1/2/ipp/quick/4/config.yaml",
+      "dup_of": "backup/img/1/2/ipp/quick/3/config.yaml",
+      "type": "hysteria2",
+      "server": "198.247.124.187",
+      "port": 23456
+    }
+  ],
   "dropped_fields": [
     {
       "src": "backup/img/1/2/ipp/clash.meta2/2/config.yaml",
